@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[Service_Rental] (
+    [Id]         INT IDENTITY (1, 1) NOT NULL,
+    [RentalId]   INT NOT NULL,
+    [ServiceId]  INT NOT NULL,
+    CONSTRAINT [PK_SERVICE_RENTAL] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_SERVICE_RENTAL_TBRENTAL] FOREIGN KEY ([RentalId]) REFERENCES [dbo].[Rental] ([Id]),
+    CONSTRAINT [FK_SERVICE_RENTAL_TBSERVICE] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Service] ([Id])
+);
+
+
+
+
+
