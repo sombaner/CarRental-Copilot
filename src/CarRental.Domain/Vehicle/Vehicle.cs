@@ -110,7 +110,8 @@ namespace CarRental.Domain.VehicleModule
                    hasPowerSteering == vehicle.hasPowerSteering &&
                    hasAbsBrakes == vehicle.hasAbsBrakes &&
                    isRented == vehicle.isRented
-                   // ToDo implemet deep Equals over the image collection &&
+                   //TODO
+                   //implemet deep Equals over the image collection &&
                    //(images == vehicle.images || (images.Count == 0 && vehicle.images == null) || (images.Count == 0 && vehicle.images.Count == 0))
                    ;
         }
