@@ -75,6 +75,9 @@ namespace CarRental.Controllers.CustomersModule
             WHERE 
                 [Id] = @Id";
 
+        private const string sqlCustomerCount =
+            @"SELECT COUNT(*) FROM [Customer]";
+
         #endregion
 
         public override string Edit(int id, Customer record)
@@ -107,6 +110,11 @@ namespace CarRental.Controllers.CustomersModule
         public override bool Exists(int id)
         {
             return Db.Exists(sqlCustomerExists, AddParameter("Id", id));
+        }
+
+        public int GetCount()
+        {
+            return Db.Get(sqlCustomerCount, ConvertToCount, null);
         }
 
         public override string InsertNew(Customer record)
@@ -164,6 +172,11 @@ namespace CarRental.Controllers.CustomersModule
             parameters.Add("IsIndividual", customer.IsPhysicalPerson);
 
             return parameters;
+        }
+
+        private int ConvertToCount(IDataReader reader)
+        {
+            return Convert.ToInt32(reader[0]);
         }
     }
 }

@@ -201,7 +201,7 @@
         await LoadDashboardData();
     }
 
-    private async Task LoadDashboardData()
+    private Task LoadDashboardData()
     {
         try
         {
@@ -214,13 +214,11 @@
             // Create rental controller with required dependencies
             var rentalController = new RentalController(vehicleController, employeeController, customerController, serviceController, couponController);
 
-            totalCustomers = customerController.SelectAll().Count;
-            var vehicles = vehicleController.SelectAll();
-            totalVehicles = vehicles.Count;
-            
-            var rentals = rentalController.SelectAll();
-            activeRentals = rentals.Count(r => r.ReturnDate == null || r.ReturnDate > DateTime.Now);
-            availableVehicles = totalVehicles - activeRentals;
+            // Use efficient count queries instead of loading all data
+            totalCustomers = customerController.GetCount();
+            totalVehicles = vehicleController.GetCount();
+            activeRentals = rentalController.GetActiveRentalCount();
+            availableVehicles = vehicleController.GetAvailableCount();
         }
         catch (Exception ex)
         {
@@ -232,6 +230,8 @@
             hasError = true;
             Console.WriteLine($"Dashboard data error: {ex.Message}");
         }
+        
+        return Task.CompletedTask;
     }
 
     private void Logout()

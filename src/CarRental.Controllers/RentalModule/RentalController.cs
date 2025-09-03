@@ -102,6 +102,9 @@ namespace CarRental.Controllers.RentalModule
         private string sqlSelectServiceIdByRentalId =
             @"SELECT [ServiceId] FROM [Service_Rental]
                WHERE [RentalId] = @RentalId";
+
+        private const string sqlSelectActiveRentalCount =
+            @"SELECT COUNT(*) FROM [Rental] WHERE [IsOpen] = 1";
         #endregion
 
         public override string InsertNew(Rental record)
@@ -164,6 +167,11 @@ namespace CarRental.Controllers.RentalModule
             return Db.Exists(sqlSelectRentalById, AddParameter("Id", id));
         }
 
+        public int GetActiveRentalCount()
+        {
+            return Db.Get(sqlSelectActiveRentalCount, ConvertToCount, null);
+        }
+
         private Dictionary<string, object> GetRentalParameters(Rental rental)
         {
             var parameters = new Dictionary<string, object>();
@@ -191,6 +199,11 @@ namespace CarRental.Controllers.RentalModule
         private int ConvertToInt(IDataReader reader)
         {
             return Convert.ToInt32(reader["ServiceId"]);
+        }
+
+        private int ConvertToCount(IDataReader reader)
+        {
+            return Convert.ToInt32(reader[0]);
         }
 
         private Rental ConvertToRental(IDataReader reader)

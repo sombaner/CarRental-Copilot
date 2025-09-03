@@ -159,6 +159,12 @@ namespace CarRental.Controllers.VehicleModule
 
         private const string sqlVehicleTotal =
             @"SELECT COUNT(*) AS QTD FROM[Vehicle]";
+
+        private const string sqlVehicleCount =
+            @"SELECT COUNT(*) FROM [Vehicle]";
+
+        private const string sqlAvailableVehicleCount =
+            @"SELECT COUNT(*) FROM [Vehicle] WHERE [IsRented] = 0";
         #endregion
         public override string InsertNew(Vehicle vehicle)
         {
@@ -188,6 +194,12 @@ namespace CarRental.Controllers.VehicleModule
             }
 
             return vehicles;
+        }
+
+        public List<Vehicle> SelectAllWithoutImages()
+        {
+            // More memory-efficient version that doesn't load images
+            return Db.GetAll(sqlSelectAllVehicles, ConvertToVehicle);
         }
         public override Vehicle SelectById(int id)
         {
@@ -227,6 +239,16 @@ namespace CarRental.Controllers.VehicleModule
         public override bool Exists(int id)
         {
             return Db.Exists(sqlVehicleExists, AddParameter("Id", id));
+        }
+
+        public int GetCount()
+        {
+            return Db.Get(sqlVehicleCount, ConvertToCount, null);
+        }
+
+        public int GetAvailableCount()
+        {
+            return Db.Get(sqlAvailableVehicleCount, ConvertToCount, null);
         }
 
         private Dictionary<string, object> GetVehicleParameters(Vehicle vehicle)
@@ -295,6 +317,11 @@ namespace CarRental.Controllers.VehicleModule
         private int ConvertData(IDataReader reader)
         {
             return Convert.ToInt32(reader["QTD"]);
+        }
+
+        private int ConvertToCount(IDataReader reader)
+        {
+            return Convert.ToInt32(reader[0]);
         }
     }
 }
