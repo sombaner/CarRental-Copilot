@@ -28,15 +28,21 @@ spec:
           value: "Production"
         - name: ASPNETCORE_URLS
           value: "http://+:8080"
+        - name: DOTNET_gcServer
+          value: "0"
+        - name: DOTNET_GCHeapCount
+          value: "2"
+        - name: DOTNET_GCConserveMemory
+          value: "9"
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "250m"
-            ephemeral-storage: "1Gi"
+            memory: "128Mi"
+            cpu: "100m"
+            ephemeral-storage: "512Mi"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
+            memory: "256Mi"
+            cpu: "300m"
+            ephemeral-storage: "1Gi"
         livenessProbe:
           httpGet:
             path: /
