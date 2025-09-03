@@ -1,0 +1,241 @@
+@page "/dashboard"
+@using CarRental.Controllers.CustomersModule
+@using CarRental.Controllers.VehicleModule
+@using CarRental.Controllers.RentalModule
+@using CarRental.Controllers.EmployeeModule
+@using CarRental.Controllers.ServiceModule
+@using CarRental.Controllers.CouponModule
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Car Rental - Dashboard</PageTitle>
+
+<div class="d-flex flex-column min-vh-100">
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-car me-2"></i>Car Rental System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customers">
+                            <i class="fas fa-users"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/vehicles">
+                            <i class="fas fa-car"></i> Vehicles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rentals">
+                            <i class="fas fa-calendar-alt"></i> Rentals
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/employees">
+                            <i class="fas fa-user-tie"></i> Employees
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/partners">
+                            <i class="fas fa-handshake"></i> Partners
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/services">
+                            <i class="fas fa-cogs"></i> Services
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light" @onclick="Logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid flex-grow-1 py-4">
+        <div class="row">
+            <div class="col-12">
+                <h1>Dashboard</h1>
+                <p class="lead">Welcome to the Car Rental Management System</p>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Total Customers</h5>
+                                <h2>@totalCustomers</h2>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Total Vehicles</h5>
+                                <h2>@totalVehicles</h2>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-car fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Active Rentals</h5>
+                                <h2>@activeRentals</h2>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-calendar-alt fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Available Vehicles</h5>
+                                <h2>@availableVehicles</h2>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3>Quick Actions</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="/customers" class="text-decoration-none">
+                            <div class="card border-primary h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Manage Customers</h5>
+                                    <p class="card-text">Add, edit, or view customer information</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/rentals" class="text-decoration-none">
+                            <div class="card border-success h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-plus-circle fa-3x text-success mb-3"></i>
+                                    <h5 class="card-title">New Rental</h5>
+                                    <p class="card-text">Create a new vehicle rental</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/vehicles" class="text-decoration-none">
+                            <div class="card border-warning h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-car fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Vehicle Fleet</h5>
+                                    <p class="card-text">Manage your vehicle inventory</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (hasError)
+        {
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle"></i>
+                <strong>Demo Mode:</strong> Database connection is not available. Using demo data.
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private int totalCustomers = 0;
+    private int totalVehicles = 0;
+    private int activeRentals = 0;
+    private int availableVehicles = 0;
+    private bool hasError = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboardData();
+    }
+
+    private async Task LoadDashboardData()
+    {
+        try
+        {
+            var customerController = new CustomerController();
+            var vehicleController = new VehicleController();
+            var employeeController = new EmployeeController();
+            var serviceController = new ServiceController();
+            var couponController = new CouponController();
+            
+            // Create rental controller with required dependencies
+            var rentalController = new RentalController(vehicleController, employeeController, customerController, serviceController, couponController);
+
+            totalCustomers = customerController.SelectAll().Count;
+            var vehicles = vehicleController.SelectAll();
+            totalVehicles = vehicles.Count;
+            
+            var rentals = rentalController.SelectAll();
+            activeRentals = rentals.Count(r => r.ReturnDate == null || r.ReturnDate > DateTime.Now);
+            availableVehicles = totalVehicles - activeRentals;
+        }
+        catch (Exception ex)
+        {
+            // Database not available, use demo data
+            totalCustomers = 25;
+            totalVehicles = 15;
+            activeRentals = 8;
+            availableVehicles = 7;
+            hasError = true;
+            Console.WriteLine($"Dashboard data error: {ex.Message}");
+        }
+    }
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}
