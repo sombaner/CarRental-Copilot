@@ -20,11 +20,11 @@ namespace CarRental.Controllers.Shared
 
         static Db()
         {
-            databaseName = ConfigurationManager.AppSettings["databaseName"];
+            databaseName = ConfigurationService.GetAppSetting("databaseName");
 
-            connectionString = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
+            connectionString = ConfigurationService.GetConnectionString(databaseName);
 
-            providerName = ConfigurationManager.ConnectionStrings[databaseName].ProviderName;
+            providerName = ConfigurationService.GetProviderName(databaseName);
 
             providerFactory = DbProviderFactories.GetFactory(providerName);
         }
